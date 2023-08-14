@@ -55,7 +55,9 @@ class CollectionViewController: UIViewController {
         return collectionView
     }()
     
-    private let searchContoller = UISearchController()
+    private let searchController = UISearchController()
+    private var isFiltred = false
+    private var filtredArray = [IndexPath]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,8 +76,8 @@ class CollectionViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        searchContoller.searchBar.placeholder = "Search..."
-        navigationItem.searchController = searchContoller
+        searchController.searchBar.placeholder = "Search..."
+        navigationItem.searchController = searchController
         navigationItem.titleView = createCustomTitle()
         
         navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
@@ -86,6 +88,9 @@ class CollectionViewController: UIViewController {
     private func setDelegates() {
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
+        
+        searchController.searchResultsUpdater = self
+        searchController.delegate = self
     }
     
     private func createCustomTitle() -> UIView {
@@ -104,6 +109,12 @@ class CollectionViewController: UIViewController {
         view.addSubview(marvelLogoImageView)
         return view
     }
+    
+    private func setAlphaForCell(alpha: Double) {
+        mainCollectionView.visibleCells.forEach { cell in
+            cell.alpha = alpha
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -119,6 +130,7 @@ extension CollectionViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeroCollectionViewCell.collectionViewCellID, for: indexPath) as? HeroCollectionViewCell else { return UICollectionViewCell() }
         
         let model = marvelHero[indexPath.row]
+        
         cell.cellConfigure(model: model)
         
         return cell
@@ -147,6 +159,54 @@ extension CollectionViewController: UICollectionViewDelegate {
         detailsVC.heroArray = marvelHero
         
         navigationController?.pushViewController(detailsVC, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if isFiltred {
+            cell.alpha = (filtredArray.contains(indexPath) ? 1 : 0.3)
+        }
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension CollectionViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        filterContentForSearchText(text)
+    }
+    
+    private func filterContentForSearchText(_ searchText: String) {
+        for (value, hero) in marvelHero.enumerated() {
+            let indexPath: IndexPath = [0, value]
+            let cell = mainCollectionView.cellForItem(at: indexPath)
+            
+            if hero.name.lowercased().contains(searchText.lowercased()) {
+                
+                filtredArray.append(indexPath)
+                
+                cell?.alpha = 1
+                
+                mainCollectionView.reloadData()
+            } else {
+                cell?.alpha = 0.3
+            }
+        }
+    }
+}
+
+// MARK: - UISearchControllerDelegate
+
+extension CollectionViewController: UISearchControllerDelegate {
+    func didPresentSearchController(_ searchController: UISearchController) {
+        isFiltred = true
+        setAlphaForCell(alpha: 0.3)
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        isFiltred = false
+        setAlphaForCell(alpha: 1)
     }
 }
 

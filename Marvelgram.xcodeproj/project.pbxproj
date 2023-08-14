@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		473CF07A2A84FFA600566BE7 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473CF0792A84FFA600566BE7 /* NetworkRequest.swift */; };
 		47C233EC2A7A554E0096900D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C233EB2A7A554E0096900D /* AppDelegate.swift */; };
 		47C233EE2A7A554E0096900D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C233ED2A7A554E0096900D /* SceneDelegate.swift */; };
 		47C233F52A7A554F0096900D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C233F42A7A554F0096900D /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		473CF0792A84FFA600566BE7 /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		47C233E82A7A554E0096900D /* Marvelgram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Marvelgram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C233EB2A7A554E0096900D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47C233ED2A7A554E0096900D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +45,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		473CF0782A84FF4000566BE7 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				473CF0792A84FFA600566BE7 /* NetworkRequest.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		47C233DF2A7A554E0096900D = {
 			isa = PBXGroup;
 			children = (
@@ -64,8 +74,9 @@
 			children = (
 				47C234012A7A578A0096900D /* Application */,
 				47C2340C2A7A621F0096900D /* Model */,
-				47C234022A7A57990096900D /* Controllers */,
 				47C234042A7A58620096900D /* Cell */,
+				47C234022A7A57990096900D /* Controllers */,
+				473CF0782A84FF4000566BE7 /* Network */,
 				47C234092A7A5FF10096900D /* Extension */,
 				47C234032A7A57AF0096900D /* Resources */,
 			);
@@ -196,6 +207,7 @@
 			files = (
 				47C234002A7A568A0096900D /* CollectionViewController.swift in Sources */,
 				47C234062A7A589E0096900D /* HeroCollectionViewCell.swift in Sources */,
+				473CF07A2A84FFA600566BE7 /* NetworkRequest.swift in Sources */,
 				47C2340B2A7A60150096900D /* UILabel + Extension.swift in Sources */,
 				47C233EC2A7A554E0096900D /* AppDelegate.swift in Sources */,
 				47C2340E2A7A62330096900D /* HeroModel.swift in Sources */,
