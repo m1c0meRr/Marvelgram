@@ -24,14 +24,31 @@ class HeroCollectionViewCell: UICollectionViewCell {
         setupViews()
         setConstraints()
     }
+    
+    override func prepareForReuse() {
+        self.cellImageView.image = nil
+    }
+    
     private func setupViews() {
         backgroundColor = .clear
         
         addSubview(cellImageView)
     }
     
-    func cellConfigure(model: HeroModel) {
-        self.cellImageView.image = UIImage(named: model.image)
+    func cellConfigure(model: HeroMarvelModel) {
+        guard let url = model.thumbnail.url else { return }
+        
+        NetworkImageFetch.shared.requestImage(url: url) { [weak self] result in
+            
+            guard let self = self else { return }
+            switch result {
+            case .success(let data):
+                let image = UIImage(data: data)
+                self.cellImageView.image = image
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     private func setConstraints() {

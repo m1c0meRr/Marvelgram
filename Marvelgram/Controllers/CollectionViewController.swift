@@ -57,7 +57,9 @@ class CollectionViewController: UIViewController {
     
     private let searchController = UISearchController()
     private var isFiltred = false
+    
     private var filtredArray = [IndexPath]()
+    private var heroesArray = [HeroMarvelModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +68,21 @@ class CollectionViewController: UIViewController {
         setupNavigationBar()
         setDelegates()
         setConstraints()
+        getHeroesArray()
+    }
+    
+    private func getHeroesArray() {
+        NetworkDataFetch.shared.fetchHero { [weak self] heroMarvelArray, error in
+            guard let self = self else { return } // проверяем есть ли ссылка
+            if error != nil {
+                print("error")
+            } else {
+                guard let heroMarvelArray = heroMarvelArray else { return }
+                self.heroesArray = heroMarvelArray
+                
+                self.mainCollectionView.reloadData()
+            }
+        }
     }
     
     private func setupViews() {
@@ -122,15 +139,14 @@ class CollectionViewController: UIViewController {
 extension CollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        marvelHero.count
+        heroesArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeroCollectionViewCell.collectionViewCellID, for: indexPath) as? HeroCollectionViewCell else { return UICollectionViewCell() }
         
-        let model = marvelHero[indexPath.row]
-        
+        let model = heroesArray[indexPath.row]
         cell.cellConfigure(model: model)
         
         return cell
@@ -152,11 +168,11 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
 extension CollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let model = marvelHero[indexPath.row]
+        let model = heroesArray[indexPath.row]
         let detailsVC = DetailsViewController()
         
         detailsVC.heroModel = model
-        detailsVC.heroArray = marvelHero
+        detailsVC.heroArray = heroesArray
         
         navigationController?.pushViewController(detailsVC, animated: true)
     }
@@ -219,7 +235,7 @@ extension CollectionViewController {
         NSLayoutConstraint.activate([
             mainCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainCollectionView.widthAnchor.constraint(equalToConstant: view.frame.width),
-            mainCollectionView.heightAnchor.constraint(equalToConstant: view.frame.height)
+            mainCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
     }
 }

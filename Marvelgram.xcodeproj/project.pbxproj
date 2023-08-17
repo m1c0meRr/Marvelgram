@@ -17,6 +17,9 @@
 		47C234082A7A5EBC0096900D /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C234072A7A5EBC0096900D /* DetailsViewController.swift */; };
 		47C2340B2A7A60150096900D /* UILabel + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C2340A2A7A60150096900D /* UILabel + Extension.swift */; };
 		47C2340E2A7A62330096900D /* HeroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C2340D2A7A62330096900D /* HeroModel.swift */; };
+		47EDF1842A8E619F00272C32 /* NetworkDataFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EDF1832A8E619F00272C32 /* NetworkDataFetch.swift */; };
+		47EDF1862A8E62B500272C32 /* HeroMarvelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EDF1852A8E62B500272C32 /* HeroMarvelModel.swift */; };
+		47EDF1882A8E70FD00272C32 /* NetworkImageFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EDF1872A8E70FD00272C32 /* NetworkImageFetch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		47C234072A7A5EBC0096900D /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		47C2340A2A7A60150096900D /* UILabel + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel + Extension.swift"; sourceTree = "<group>"; };
 		47C2340D2A7A62330096900D /* HeroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroModel.swift; sourceTree = "<group>"; };
+		47EDF1832A8E619F00272C32 /* NetworkDataFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetch.swift; sourceTree = "<group>"; };
+		47EDF1852A8E62B500272C32 /* HeroMarvelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroMarvelModel.swift; sourceTree = "<group>"; };
+		47EDF1872A8E70FD00272C32 /* NetworkImageFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkImageFetch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +55,8 @@
 			isa = PBXGroup;
 			children = (
 				473CF0792A84FFA600566BE7 /* NetworkRequest.swift */,
+				47EDF1832A8E619F00272C32 /* NetworkDataFetch.swift */,
+				47EDF1872A8E70FD00272C32 /* NetworkImageFetch.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -131,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				47C2340D2A7A62330096900D /* HeroModel.swift */,
+				47EDF1852A8E62B500272C32 /* HeroMarvelModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -207,8 +216,11 @@
 			files = (
 				47C234002A7A568A0096900D /* CollectionViewController.swift in Sources */,
 				47C234062A7A589E0096900D /* HeroCollectionViewCell.swift in Sources */,
+				47EDF1862A8E62B500272C32 /* HeroMarvelModel.swift in Sources */,
 				473CF07A2A84FFA600566BE7 /* NetworkRequest.swift in Sources */,
 				47C2340B2A7A60150096900D /* UILabel + Extension.swift in Sources */,
+				47EDF1842A8E619F00272C32 /* NetworkDataFetch.swift in Sources */,
+				47EDF1882A8E70FD00272C32 /* NetworkImageFetch.swift in Sources */,
 				47C233EC2A7A554E0096900D /* AppDelegate.swift in Sources */,
 				47C2340E2A7A62330096900D /* HeroModel.swift in Sources */,
 				47C233EE2A7A554E0096900D /* SceneDelegate.swift in Sources */,

@@ -41,9 +41,9 @@ class DetailsViewController: UIViewController {
         return collectionView
     }()
     
-    var heroModel: HeroModel?
-    var heroArray = [HeroModel]()
-    var randomArray = [HeroModel]()
+    var heroModel: HeroMarvelModel?
+    var heroArray = [HeroMarvelModel]()
+    var randomArray = [HeroMarvelModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,12 +70,27 @@ class DetailsViewController: UIViewController {
     private func setupHeroInfo() {
         guard let heroModel = heroModel else { return }
         title = heroModel.name
-        detailsImageView.image = UIImage(named: heroModel.image)
         descriptionLabel.text = heroModel.description
+        if descriptionLabel.text == "" {
+            descriptionLabel.text = "The data on this hero is classified as 'TOP SECRET'"
+        }
+        
+        guard let url = heroModel.thumbnail.url else { return }
+        NetworkImageFetch.shared.requestImage(url: url) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                
+            case .success(let data):
+                let image = UIImage(data: data)
+                self.detailsImageView.image = image
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     private func setupRandom() {
-        while randomArray.count < 5 {
+        while randomArray.count < 10 {
             
             let randomInt = Int.random(in: 0...heroArray.count - 1)
             randomArray.append(heroArray[randomInt])
