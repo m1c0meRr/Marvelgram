@@ -25,7 +25,6 @@ class CollectionViewController: UIViewController {
     private let searchController = UISearchController()
     private var isFiltred = false
     
-    private var filtredArray1: IndexPath?
     private var filtredArray = [IndexPath]()
     private var heroesArray = [HeroMarvelModel]()
     private var filtredHeroArray = [HeroMarvelModel]()
@@ -33,22 +32,21 @@ class CollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        getHeroesArray()
         setupViews()
         setupNavigationBar()
         setDelegates()
         setConstraints()
-        getHeroesArray()
     }
     
     private func getHeroesArray() {
-        NetworkDataFetch.shared.fetchHero { [weak self] heroMarvelArray, error in
+        NetworkDataFetch.shared.fetchHero { [weak self] heroData, error in
             guard let self = self else { return } // проверяем есть ли ссылка
             if error != nil {
                 print("error")
             } else {
-                guard let heroMarvelArray = heroMarvelArray else { return }
-                self.heroesArray = heroMarvelArray
-                
+                guard let heroData = heroData else { return }
+                self.heroesArray = heroData
                 self.mainCollectionView.reloadData()
             }
         }
@@ -104,7 +102,10 @@ class CollectionViewController: UIViewController {
     }
     
     private func refreshData() {
+        
         isFiltred = false
+        setAlphaForCell(alpha: 1)
+        filtredHeroArray.removeAll()
         mainCollectionView.reloadData()
     }
 }
@@ -124,7 +125,6 @@ extension CollectionViewController: UICollectionViewDataSource {
         let model = isFiltred ? filtredHeroArray[indexPath.row] : heroesArray[indexPath.row]
         
         cell.cellConfigure(model: model)
-        
         return cell
     }
 }
@@ -144,7 +144,7 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
 extension CollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let model = heroesArray[indexPath.row]
+        let model = isFiltred ? filtredHeroArray[indexPath.row] : heroesArray[indexPath.row]
         let detailsVC = DetailsViewController()
         
         detailsVC.heroModel = model
@@ -166,19 +166,17 @@ extension CollectionViewController: UICollectionViewDelegate {
     }
 }
 
-// MARK: - UISearchResultsUpdating
+// MARK: - UISearchControllerDelegate
 
 extension CollectionViewController: UISearchControllerDelegate {
     func didPresentSearchController(_ searchController: UISearchController) {
-      
+        filtredHeroArray = heroesArray
         isFiltred = true
         setAlphaForCell(alpha: 0.3)
     }
     
     func didDismissSearchController(_ searchController: UISearchController) {
-        print("didDismissSearchController")
-        isFiltred = false
-        setAlphaForCell(alpha: 1)
+        refreshData()
     }
 }
 
@@ -189,19 +187,16 @@ extension CollectionViewController: UISearchResultsUpdating {
     }
     
     private func filterContentForSearchText(_ searchText: String) {
-        for (value, hero) in heroesArray.enumerated() {
+        for (value, hero) in filtredHeroArray.enumerated() {
             let indexPath: IndexPath = [0, value]
             guard let cell = mainCollectionView.cellForItem(at: indexPath) else { return }
             
             if hero.name.lowercased().contains(searchText.lowercased()) {
-                
                 filtredArray.removeAll()
-                filtredHeroArray.removeAll()
                 filtredArray.append(indexPath)
                 
-                let firstHero = heroesArray.startIndex
-                filtredHeroArray = heroesArray
-                heroesArray.swapAt(value, firstHero)
+                let firstHero = filtredHeroArray.startIndex
+                filtredHeroArray.swapAt(value, firstHero)
                 
                 mainCollectionView.reloadData()
                 
@@ -212,21 +207,6 @@ extension CollectionViewController: UISearchResultsUpdating {
         }
     }
 }
-
-// MARK: - UISearchControllerDelegate
-
-//extension CollectionViewController: UISearchControllerDelegate {
-//
-////    func didPresentSearchController(_ searchController: UISearchController) {
-////        isFiltred = true
-////        setAlphaForCell(alpha: 0.3)
-////    }
-////
-////    func didDismissSearchController(_ searchController: UISearchController) {
-////        isFiltred = false
-////        setAlphaForCell(alpha: 1)
-////    }
-//}
 
 // MARK: - UISearchBarDelegate
 
